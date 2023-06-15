@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import { Tabs } from 'expo-router';
+import { useColorScheme } from 'react-native';
 
 import Colors from '../../constants/Colors';
 
@@ -25,28 +25,18 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Usina solar',
+          title: 'Usina Solar',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) => <TabBarIcon name="solar-panel" color={color} />,
           // headerRight: () => (
-          //   <Link href="/modal" asChild>
-          //     <Pressable>
-          //       {({ pressed }) => (
-          //         <FontAwesome
-          //           name="info-circle"
-          //           size={25}
-          //           color={Colors[colorScheme ?? 'light'].text}
-          //           style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-          //         />
-          //       )}
-          //     </Pressable>
-          //   </Link>
+          //   <Status generating={true}/>
           // ),
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Detalhes',
+          title: 'Geração',
           tabBarIcon: ({ color }) => <TabBarIcon name="chart-bar" color={color} />,
         }}
       />
