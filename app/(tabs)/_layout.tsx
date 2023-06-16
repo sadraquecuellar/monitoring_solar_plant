@@ -20,23 +20,26 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#fff',
+        tabBarStyle:{
+          backgroundColor: '#1a1a1a',
+          
+        }
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Usina Solar',
           headerTitleAlign: 'center',
+          headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="solar-panel" color={color} />,
-          // headerRight: () => (
-          //   <Status generating={true}/>
-          // ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="details"
         options={{
-          title: 'Geração',
+          title: 'Detalhes',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) => <TabBarIcon name="chart-bar" color={color} />,
         }}
       />
