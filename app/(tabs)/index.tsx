@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
 import { View, Platform } from 'react-native';
 import { useQuery } from 'react-query';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Lottie from 'lottie-react-native';
-import { useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 
-import * as S from '../../styles/tabs/index/styles'
 import api from '../../services/api';
-import { StatusBar } from 'expo-status-bar';
-import ProgressStatus from '../../components/ProgressStatus';
+import ProgressStatus from '../../components/ProgressStatusSummary';
+
+import * as S from '../../styles/tabs/index/styles'
+import DetailsSummary from '../../components/DetailsSummary';
 
 export default function HomeScreen() {
-  const router = useRouter();
-
   const [totalGenerated, setTotalGenerated] = useState(0)
   const [totalExpected, setTotalExpected] = useState(0)
   const [percentageGenerated, setPercentageGenerated] = useState(0)
   const [generating, setGenerating] = useState(true)
-
 
   const { data: statsSolar, isLoading } = useQuery(
     'daily-stats',
@@ -28,7 +24,6 @@ export default function HomeScreen() {
       );
     }
   )
-
 
   useEffect(() => {
     if(!isLoading){
@@ -59,86 +54,7 @@ export default function HomeScreen() {
           </View>
         </S.HeaderSummary>
       <ProgressStatus percentageGenerated={percentageGenerated}/>
-      <S.Resume>
-        <S.SelectDay>
-          <S.SelectDayButton>
-            <AntDesign name="left" size={20} color="white" />
-          </S.SelectDayButton>
-          <S.SelectDayContent>
-            <S.SelectDayContentText>
-              Hoje, 16/06/23
-            </S.SelectDayContentText>
-          </S.SelectDayContent>
-          <S.SelectDayButton>
-            <AntDesign name="right" size={20} color="white" />
-          </S.SelectDayButton>
-        </S.SelectDay>
-        <S.Details>
-          <S.DetailsLeftSide>
-            <S.BoxDetails>
-              <S.BoxDetailsLeft>
-                <S.Row>
-                  <S.TextNumberPrimary>
-                    {/* {totalGenerated} */}
-                    135
-                  </S.TextNumberPrimary>
-                  <S.TextNumberSecondary>
-                    {' '} kWh
-                  </S.TextNumberSecondary>
-                </S.Row>
-                <S.TextDetailsSmall>
-                  Energia gerada
-                </S.TextDetailsSmall>
-                <S.Row>
-                  <S.TextNumberPrimary>
-                    {/* {totalGenerated} */}
-                    135
-                  </S.TextNumberPrimary>
-                  <S.TextNumberSecondary>
-                    {' '} kWh
-                  </S.TextNumberSecondary>
-                </S.Row>
-                <S.TextDetailsSmall>
-                  Energia gerada
-                </S.TextDetailsSmall>
-              </S.BoxDetailsLeft>
-              <S.BoxDetailsRight>
-                <AntDesign name="left" size={24} color="green" />
-              </S.BoxDetailsRight>
-            </S.BoxDetails>
-          </S.DetailsLeftSide>
-          <S.DetailsRightSide>
-            <S.Row>
-              <S.TextNumberPrimary>
-                {/* {totalGenerated} */}
-                135
-              </S.TextNumberPrimary>
-              <S.TextNumberSecondary>
-                {' '} kWh
-              </S.TextNumberSecondary>
-            </S.Row>
-            <S.TextDetailsSmall>
-              Energia gerada
-            </S.TextDetailsSmall>
-          </S.DetailsRightSide>
-          {/* <S.Row>
-            <S.TextTertiary>
-              Energia gerada: 
-            </S.TextTertiary>
-            <S.TextSecondary>
-              {' '}{totalGenerated} kWh
-            </S.TextSecondary>
-          </S.Row>
-          <S.Row>
-            <S.TextTertiary>
-              Energia esperada: 
-            </S.TextTertiary>
-            <S.TextSecondary>
-              {' '}{totalExpected.toFixed(1)} kWh
-            </S.TextSecondary> 
-          </S.Row> */}
-        </S.Details>
-      </S.Resume>
+      <DetailsSummary/>
     </S.Container>
   );
 }
