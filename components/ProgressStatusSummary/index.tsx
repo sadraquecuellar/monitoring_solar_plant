@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import * as S from './styles';
+interface ProgressStatusProps {
+  percentageGenerated: string
+}
 
-export default function ProgressStatus(props: any){
+export default function ProgressStatus({percentageGenerated}: ProgressStatusProps){
+  const [completed, setCompleted] = useState(false);
 
-  const {percentageGenerated} = props
+  useEffect(()=>{
+    setCompleted(false)
+  },[percentageGenerated])
 
   return (
     <S.Container>
@@ -21,12 +27,17 @@ export default function ProgressStatus(props: any){
         style={{
           marginBottom:-20,
         }}
+        onAnimationComplete={() => setCompleted(true)}
       >
       {
         (fill) => (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <S.TextProgress>{fill}</S.TextProgress>
-            <S.TextProgressSmall>%</S.TextProgressSmall>
+            {completed && (
+              <>
+                <S.TextProgress>{fill}</S.TextProgress>
+                <S.TextProgressSmall>%</S.TextProgressSmall>
+              </>
+            )}
           </View>
         )
       }

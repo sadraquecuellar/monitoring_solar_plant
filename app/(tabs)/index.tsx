@@ -33,11 +33,11 @@ export default function HomeScreen() {
       setToday(`${dateToday.getDate()}/${dateToday.getMonth()+1 < 10 ? `0${dateToday.getMonth()+1}` : dateToday.getMonth()+1}/${dateToday.getFullYear()}`)
       setTotalExpected(expected[expected.length-1]);
       setTotalGenerated(somarItensArray(generation));
-      setPercentageGenerated(totals?.percentage.toFixed(0));
+      setPercentageGenerated(totals?.percentage);
       setTreesSaved(totals?.trees);
       setCo2Not(totals?.co2);
     }
-  },[])
+  },[hourlyData])
 
   return (
     <S.Container>
@@ -50,7 +50,7 @@ export default function HomeScreen() {
             }
           </View>
         </S.HeaderSummary>
-      <ProgressStatus percentageGenerated={percentageGenerated}/>
+      <ProgressStatus percentageGenerated={percentageGenerated.toFixed(0)}/>
       <DetailsSummary 
         totalGenerated={totalGenerated} 
         totalExpected={totalExpected}

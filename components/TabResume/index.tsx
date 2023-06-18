@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -15,11 +15,16 @@ interface TabResumeProps {
 
 export default function TabResume({option, setOption, percentage}: TabResumeProps){
   const [isPanelActive, setIsPanelActive] = useState(false);
+  const [completed, setCompleted] = useState(false);
   
   const handleOption = (op: {label: string, value: string}) =>{
     setIsPanelActive(false)
     setOption(op)
   }
+
+  useEffect(()=>{
+    setCompleted(false)
+  },[option])
 
   return (
     <S.Container>
@@ -33,18 +38,23 @@ export default function TabResume({option, setOption, percentage}: TabResumeProp
       <AnimatedCircularProgress
         size={250}
         width={30}
-        fill={percentage}
+        fill={Number(percentage)}
         tintColor="#F6C945"
         backgroundColor="#b3b3b3"
         style={{
           marginBottom:-20,
         }}
+        onAnimationComplete={() => setCompleted(true)}
       >
       {
         (fill) => (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <S.TextProgress>{fill}</S.TextProgress>
-            <S.TextProgressSmall>%</S.TextProgressSmall>
+            {completed && (
+              <>
+                <S.TextProgress>{fill}</S.TextProgress>
+                <S.TextProgressSmall>%</S.TextProgressSmall>
+              </>
+            )}
           </View>
         )
       }

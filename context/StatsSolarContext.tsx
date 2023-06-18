@@ -5,22 +5,18 @@ import { useQuery } from "react-query";
 type ContextProps = {
   children : ReactNode
 }
-
 type ResponseAPI = {
-  data: {
-      data_type: string,
-      x_labels: Array<string>,
-      generation: Array<number>,
-      expected: Array<number>,
-      totals: {
-        kwh: string,
-        percentage: string,
-        trees: string,
-        co2: string,
-      }
+  data_type: string,
+  x_labels: Array<string>,
+  generation: Array<number>,
+  expected: Array<number>,
+  totals: {
+    kwh: string,
+    percentage: number,
+    trees: number,
+    co2: number,
   }
 }
-
 interface ISolarContextType {
   hourlyData: ResponseAPI;
   dailyData: ResponseAPI;
@@ -28,13 +24,32 @@ interface ISolarContextType {
   yearlyData: ResponseAPI;
 };
 
-export const StatsSolarContext = createContext({});
+const initialState = {
+  data_type: '',
+  x_labels: [''],
+  generation: [0],
+  expected: [0],
+  totals: {
+    kwh: '',
+    percentage: 0,
+    trees: 0,
+    co2: 0 
+  }
+}
+
+export const StatsSolarContext = createContext<ISolarContextType>({
+  hourlyData: initialState,
+  dailyData: initialState,
+  monthlyData: initialState,
+  yearlyData: initialState
+});
+
 
 export const StatsSolarProvider = ({children}:ContextProps) => {
-  const [hourlyData, setHourlyData] = useState<ResponseAPI>()
-  const [dailyData, setDailyData] = useState<ResponseAPI>()
-  const [monthlyData, setMonthlyData] = useState<ResponseAPI>()
-  const [yearlyData, setYearlyData] = useState<ResponseAPI>()
+  const [hourlyData, setHourlyData] = useState(initialState)
+  const [dailyData, setDailyData] = useState(initialState)
+  const [monthlyData, setMonthlyData] = useState(initialState)
+  const [yearlyData, setYearlyData] = useState(initialState)
 
   const getStatsHourly = async () =>{
     return await api.get(
