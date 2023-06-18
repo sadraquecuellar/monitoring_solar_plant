@@ -3,11 +3,11 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   width:50%;
   align-items: center;
-  margin-bottom:9px;
+  margin-bottom:7px;
 `;
 export const Content = styled.View`
   background-color: #333;
-  width:95%;
+  width:98%;
   height: 180px;
   border-radius:10px;
   padding:15px;

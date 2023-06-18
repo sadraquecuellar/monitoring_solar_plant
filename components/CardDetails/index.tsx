@@ -30,11 +30,12 @@ interface CardDetailsProps {
   title: string,
   value: string,
   unity: string,
+  direction: string,
 }
 
-export default function CardDetails({type, title, value, unity}:CardDetailsProps){
+export default function CardDetails({type, title, value, unity, direction}:CardDetailsProps){
   return (
-    <S.Container>
+    <S.Container style={{ alignItems: direction === 'left' ? 'flex-start' : 'flex-end' }}>
       <S.Content>
         <IconCard type={type || 'energy-generated'}/>
         {value.length <= 3 && <S.TextPrimary>{value}</S.TextPrimary>}

@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
-import { useQuery, useQueryClient  } from 'react-query';
 
 import TabResume from '../../components/TabResume';
 import CardDetails from '../../components/CardDetails';
-import api from '../../services/api';
 
-import * as S from '../../styles/tabs/details/styles'
 import ChartDetails from '../../components/ChartDetails';
 import { useStatsSolar } from '../../context/StatsSolarContext';
 
-export default function Details() {
-  const queryClient = useQueryClient();
+import * as S from '../../styles/tabs/details/styles'
 
+export default function Details() {
   const { hourlyData, dailyData, monthlyData, yearlyData } = useStatsSolar();
   
   const [option, setOption] = useState({label: 'Horas', value: 'hourly'});
@@ -111,13 +107,7 @@ export default function Details() {
         break;
     }
   },[option])
-
-  const handleOptions = async (option: {label: string, value: string} ) => {
-    await queryClient.refetchQueries({queryKey: ['stats'], exact: true })
-    setOption(option)
-  }
   
-
   const details = [
     { id: 1, type:"energy-generated", title:'Energia gerada', value: `${energyGenerated}`, unity: 'kWh'},
     { id: 2, type:"panel", title:'Painéis ativos', value:'3', unity: 'un.'},
@@ -130,15 +120,18 @@ export default function Details() {
       <S.Container>
         <TabResume 
           option={option}
-          setOption={handleOptions} 
+          setOption={setOption} 
           percentage={percentage}
         />
-        <FlatList
-          data={details}
-          renderItem={({item}) => <CardDetails type={item?.type} title={item?.title} value={item?.value} unity={item?.unity}/>}
-          keyExtractor={item => item.id.toString()}
-          numColumns={2}
-        />
+
+        <S.LineCards>
+          <CardDetails type={details[0]?.type} title={details[0]?.title} value={details[0]?.value} unity={details[0]?.unity} direction={'left'}/>
+          <CardDetails type={details[1]?.type} title={details[1]?.title} value={details[1]?.value} unity={details[1]?.unity} direction={'right'}/>
+        </S.LineCards>
+        <S.LineCards>
+          <CardDetails type={details[2]?.type} title={details[2]?.title} value={details[2]?.value} unity={details[2]?.unity} direction={'left'}/>
+          <CardDetails type={details[3]?.type} title={details[3]?.title} value={details[3]?.value} unity={details[3]?.unity} direction={'right'}/>
+        </S.LineCards>
 
         <ChartDetails chartData={dataChart} labelX={labelX}/>
       </S.Container>

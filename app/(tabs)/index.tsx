@@ -5,8 +5,9 @@ import Lottie from 'lottie-react-native';
 import ProgressStatus from '../../components/ProgressStatusSummary';
 import DetailsSummary from '../../components/DetailsSummary';
 
-import * as S from '../../styles/tabs/index/styles'
 import { useStatsSolar } from '../../context/StatsSolarContext';
+
+import * as S from '../../styles/tabs/index/styles'
 
 export default function HomeScreen() {
   const [totalGenerated, setTotalGenerated] = useState(0)
