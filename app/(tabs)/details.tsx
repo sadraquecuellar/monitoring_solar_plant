@@ -17,10 +17,12 @@ export default function Details() {
   const [energyGenerated, setEnergyGenerated] = useState(0);
   const [treesSaved, setTreesSaved] = useState(0);
   const [co2Not, setCo2Not] = useState(0);
+  const [dataChart, setDataChart] = useState<Array<{x: string, y: number}>>([]);
+  const [labelX, setLabelX] = useState('Hora')
 
   const getStats = async () =>{
     return await api.get(
-      `/plant/generation/test-2023?dataType=${option?.value}`,
+      `/plant/generation/test-2023?dataType=yearly`,
     );
   }
 
@@ -42,10 +44,65 @@ export default function Details() {
     refetchData()
   },[option])
 
+
+  const generatedDataChart = (array1: Array<string>, array2: Array<number>) => {
+    const mergedList = [];
+    for (let i = 0; i < array1.length; i++) {
+      const item1 = array1[i];
+      const item2 = array2[i];
+      const mergedItem = { x: item1, y: item2 };
+      mergedList.push(mergedItem);
+    }
+    return mergedList;
+  }
+
+  const labelDataChart = (arrayLabel: Array<string>) =>{
+    const formatDaily = () => {
+      const list = []
+      for (let i = 0; i < arrayLabel.length; i++){
+        list.push(arrayLabel[i].split('-')[2])
+      }
+      return list
+    }
+    const formatMonthly = () => {
+      const list = []
+      for (let i = 0; i < arrayLabel.length; i++){
+        list.push(`${arrayLabel[i].split('-')[1]}/${arrayLabel[i].split('-')[0].substring(2,4)}`)
+      }
+      return list
+    }
+    const formatYearly = () => {
+      const list = []
+      for (let i = 0; i < arrayLabel.length; i++){
+        list.push(`${arrayLabel[i].split('-')[0].substring(2,4)}`)
+      }
+      return list
+    }
+
+    const x = 1
+
+    switch (x){
+      case 1:
+        setLabelX('Ano')
+        return formatYearly()
+      case 'daily':
+        setLabelX('Dias')
+        return formatDaily()
+      case 'monthly':
+        setLabelX('Mês')
+        return formatMonthly()
+      default:
+        return []
+    }
+  }
+
   useEffect(()=>{
     if(!isLoading){
-      console.log(statsSolar?.data?.data?.totals)
+      console.log(statsSolar?.data?.data?.x_labels)
       const {kwh, percentage, trees, co2} = statsSolar?.data?.data?.totals
+      const labels = statsSolar?.data?.data?.x_labels || undefined
+      const generation = statsSolar?.data?.data?.generation || undefined
+      setDataChart(generatedDataChart(labelDataChart(labels), generation))
       setPercentage(percentage.toFixed(0))
       setEnergyGenerated(kwh.toFixed(1))
       setTreesSaved(trees)
@@ -75,7 +132,7 @@ export default function Details() {
           numColumns={2}
         />
 
-        <ChartDetails/>
+        <ChartDetails chartData={dataChart} labelX={labelX}/>
       </S.Container>
     </S.ScrollPage>
   );
