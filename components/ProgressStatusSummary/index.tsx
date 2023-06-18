@@ -36,7 +36,7 @@ export default function ProgressStatus({percentageGenerated}: ProgressStatusProp
       >
       {
         (fill) => (
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View testID='fillValueCircularProgress' style={{flexDirection: 'row', alignItems: 'center'}}>
             {completed && (
               <>
                 <S.TextProgress>{fill}</S.TextProgress>

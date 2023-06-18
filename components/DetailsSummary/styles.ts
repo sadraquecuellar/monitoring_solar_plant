@@ -66,29 +66,3 @@ export const Row = styled.View`
   align-items:center;
   margin-bottom:5px;
 `;
-export const BoxDetails = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items:center;
-`;
-export const BoxDetailsLeft = styled.View`
-  width: 80%;
-  align-items:center;
-`;
-export const BoxDetailsRight = styled.View`
-  width: 15%;
-  align-items:flex-start;
-`;
-export const TextNumberPrimary = styled.Text`
-  font-size:32px;
-  font-weight:bold;
-  color:#fff;
-`;
-export const TextNumberSecondary = styled.Text`
-  font-size:18px;
-  color:#fff;
-`;
-export const TextDetailsSmall = styled.Text`
-  font-size:14px;
-  color:#fff;
-`;

@@ -13,13 +13,13 @@ type IconCardProps = {
 const IconCard = ({type}: IconCardProps) => {
   switch (type) {
     case 'tree':
-      return (<Foundation name="trees" size={30} color="green" />)
+      return (<Foundation testID="iconCardDetails" name="trees" size={30} color="green" />)
     case 'co2':
-      return (<MaterialCommunityIcons name="molecule-co2" size={30} color="white" />)
+      return (<MaterialCommunityIcons testID="iconCardDetails" name="molecule-co2" size={30} color="white" />)
     case 'energy-generated':
-      return <SimpleLineIcons name="energy" size={30} color="yellow" />
+      return <SimpleLineIcons testID="iconCardDetails" name="energy" size={30} color="yellow" />
     case 'panel':
-      return <FontAwesome5 name="solar-panel" size={30} color="white" />
+      return <FontAwesome5 testID="iconCardDetails" name="solar-panel" size={30} color="white" />
     default:
       return <></>
   }
