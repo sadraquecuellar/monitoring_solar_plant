@@ -4,11 +4,16 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import * as S from './styles';
 interface ProgressStatusProps {
-  percentageGenerated: string
+  percentageGenerated: number
 }
 
 export default function ProgressStatus({percentageGenerated}: ProgressStatusProps){
   const [completed, setCompleted] = useState(false);
+
+  const handleCompleted = () =>{
+    if(percentageGenerated === -1) return
+    setCompleted(true)
+  }
 
   useEffect(()=>{
     setCompleted(false)
@@ -27,7 +32,7 @@ export default function ProgressStatus({percentageGenerated}: ProgressStatusProp
         style={{
           marginBottom:-20,
         }}
-        onAnimationComplete={() => setCompleted(true)}
+        onAnimationComplete={() => handleCompleted()}
       >
       {
         (fill) => (

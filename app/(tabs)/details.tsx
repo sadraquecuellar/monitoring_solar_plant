@@ -11,7 +11,7 @@ import * as S from '../../styles/tabs/details/styles'
 export default function Details() {
   const { hourlyData, dailyData, monthlyData, yearlyData } = useStatsSolar();
   
-  const [option, setOption] = useState({label: 'Horas', value: 'hourly'});
+  const [option, setOption] = useState({label: 'Horas', value: 'null'});
   const [percentage, setPercentage] = useState(0);
   const [energyGenerated, setEnergyGenerated] = useState(0);
   const [treesSaved, setTreesSaved] = useState(0);

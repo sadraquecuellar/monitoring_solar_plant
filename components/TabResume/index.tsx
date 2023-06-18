@@ -22,9 +22,15 @@ export default function TabResume({option, setOption, percentage}: TabResumeProp
     setOption(op)
   }
 
+  const handleCompleted = () =>{
+    if(option.value === 'null') setOption({label: 'Horas', value: 'hourly'})
+    setCompleted(true)
+  }
+
   useEffect(()=>{
     setCompleted(false)
   },[option])
+
 
   return (
     <S.Container>
@@ -44,7 +50,7 @@ export default function TabResume({option, setOption, percentage}: TabResumeProp
         style={{
           marginBottom:-20,
         }}
-        onAnimationComplete={() => setCompleted(true)}
+        onAnimationComplete={() => handleCompleted() }
       >
       {
         (fill) => (

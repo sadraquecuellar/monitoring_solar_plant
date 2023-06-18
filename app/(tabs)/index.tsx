@@ -12,7 +12,7 @@ import * as S from '../../styles/tabs/index/styles'
 export default function HomeScreen() {
   const [totalGenerated, setTotalGenerated] = useState(0)
   const [totalExpected, setTotalExpected] = useState(0)
-  const [percentageGenerated, setPercentageGenerated] = useState(0)
+  const [percentageGenerated, setPercentageGenerated] = useState(-1)
   const [generating, setGenerating] = useState(true)
   const [treesSaved, setTreesSaved] = useState(0);
   const [co2Not, setCo2Not] = useState(0);
@@ -34,7 +34,7 @@ export default function HomeScreen() {
       setToday(`${dateToday.getDate()}/${dateToday.getMonth()+1 < 10 ? `0${dateToday.getMonth()+1}` : dateToday.getMonth()+1}/${dateToday.getFullYear()}`)
       setTotalExpected(expected[expected.length-1]);
       setTotalGenerated(somarItensArray(generation));
-      setPercentageGenerated(totals?.percentage);
+      setPercentageGenerated(Number(totals?.percentage.toFixed(0)));
       setTreesSaved(totals?.trees);
       setCo2Not(totals?.co2);
     }
@@ -50,8 +50,8 @@ export default function HomeScreen() {
               <Lottie source={require('../../assets/lotties/circle-green.json')} autoPlay loop />
             }
           </View>
-        </S.HeaderSummary>
-      <ProgressStatus percentageGenerated={percentageGenerated.toFixed(0)}/>
+      </S.HeaderSummary>
+      <ProgressStatus percentageGenerated={percentageGenerated}/>
       <DetailsSummary 
         totalGenerated={totalGenerated} 
         totalExpected={totalExpected}

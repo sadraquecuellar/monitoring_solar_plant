@@ -31,7 +31,7 @@ const initialState = {
   expected: [0],
   totals: {
     kwh: '',
-    percentage: 0,
+    percentage: -1,
     trees: 0,
     co2: 0 
   }
