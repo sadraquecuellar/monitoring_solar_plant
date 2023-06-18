@@ -1,4 +1,4 @@
-# Aplicativo Mobile de Geração de Usina Solar
+# Aplicativo para Controle de Geração de Usina Solar
 
 Aplicativo mobile utilizando React Native (expo) para o controle de informações sobre a geração de energia de uma usina solar.
 
