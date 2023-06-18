@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { ViewProps } from '../Themed';
 
 export const Container = styled.View`
   width: 100%;
@@ -11,6 +10,10 @@ export const Container = styled.View`
 export const TextProgress = styled.Text`
   font-weight:bold;
   font-size:65px;
+  color:#fff;
+`;
+export const TextProgressSmall = styled.Text`
+  font-size:35px;
   color:#fff;
 `;
 export const StatusDetails = styled.View`

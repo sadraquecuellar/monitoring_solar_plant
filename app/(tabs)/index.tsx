@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from 'react-query';
 import Lottie from 'lottie-react-native';
-import { AntDesign } from '@expo/vector-icons';
 
 import api from '../../services/api';
 import ProgressStatus from '../../components/ProgressStatusSummary';
@@ -43,7 +42,6 @@ export default function HomeScreen() {
 
   return (
     <S.Container>
-      <S.TextPrimary>Resumo</S.TextPrimary>
       <S.HeaderSummary>
           <View style={{width: '10%', height: '100%'}}>
             {generating ? 

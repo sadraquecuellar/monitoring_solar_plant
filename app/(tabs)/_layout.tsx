@@ -1,12 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { useColorScheme } from 'react-native';
 
-import Colors from '../../constants/Colors';
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
   color: string;
@@ -15,23 +9,29 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#fff',
         tabBarStyle:{
           backgroundColor: '#1a1a1a',
+        },
+        headerStyle:{
+          backgroundColor: '#1a1a1a',
           
         }
+        
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Usina Solar',
+          title: 'Resumo',
           headerTitleAlign: 'center',
-          headerShown:false,
+          headerTitleStyle:{
+            color: '#fff',
+            fontSize:24
+          },
+          // headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="solar-panel" color={color} />,
         }}
       />
@@ -40,6 +40,11 @@ export default function TabLayout() {
         options={{
           title: 'Detalhes',
           headerTitleAlign: 'center',
+          headerTitleStyle:{
+            color: '#fff',
+            fontSize:24
+          },
+          // headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="chart-bar" color={color} />,
         }}
       />

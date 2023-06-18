@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import * as S from './styles';
@@ -10,16 +11,23 @@ export default function ProgressStatus(props: any){
   return (
     <S.Container>
       <AnimatedCircularProgress
-        size={260}
-        width={30}
-        fill={percentageGenerated}
+        size={300}
+        width={20}
+        arcSweepAngle={220}
+        rotation={250}
+        fill={Number(percentageGenerated)}
         tintColor="#F6C945"
         backgroundColor="#b3b3b3"
-        style={{marginTop:-20}}
+        style={{
+          marginBottom:-20,
+        }}
       >
       {
         (fill) => (
-          <S.TextProgress>{fill}%</S.TextProgress>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <S.TextProgress>{fill}</S.TextProgress>
+            <S.TextProgressSmall>%</S.TextProgressSmall>
+          </View>
         )
       }
       </AnimatedCircularProgress>

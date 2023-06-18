@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   width: 100%;
   height:50%;
-  padding: 10px;
+  padding: 20px;
   align-items:center;
   justify-content:flex-start;
   background-color: #3c017f;
@@ -55,6 +55,7 @@ export const Details = styled.View`
 export const DetailsLeftSide = styled.View`
   width: 50%;
   align-items:center;
+  justify-content:center;
 `;
 export const DetailsRightSide = styled.View`
   width: 50%;
@@ -68,12 +69,15 @@ export const Row = styled.View`
 export const BoxDetails = styled.View`
   width: 100%;
   flex-direction: row;
+  align-items:center;
 `;
 export const BoxDetailsLeft = styled.View`
-  width: 90%;
+  width: 80%;
+  align-items:center;
 `;
 export const BoxDetailsRight = styled.View`
-  width: 10%;
+  width: 15%;
+  align-items:flex-start;
 `;
 export const TextNumberPrimary = styled.Text`
   font-size:32px;
