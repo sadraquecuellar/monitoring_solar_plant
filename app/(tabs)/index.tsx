@@ -1,44 +1,43 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { useQuery } from 'react-query';
 import Lottie from 'lottie-react-native';
 
-import api from '../../services/api';
 import ProgressStatus from '../../components/ProgressStatusSummary';
+import DetailsSummary from '../../components/DetailsSummary';
 
 import * as S from '../../styles/tabs/index/styles'
-import DetailsSummary from '../../components/DetailsSummary';
+import { useStatsSolar } from '../../context/StatsSolarContext';
 
 export default function HomeScreen() {
   const [totalGenerated, setTotalGenerated] = useState(0)
   const [totalExpected, setTotalExpected] = useState(0)
   const [percentageGenerated, setPercentageGenerated] = useState(0)
   const [generating, setGenerating] = useState(true)
-
-  const { data: statsSolar, isLoading } = useQuery(
-    'daily-stats',
-    async () => {
-      return await api.get(
-        `/plant/generation/test-2023?dataType=daily`,
-      );
-    }
-  )
+  const [treesSaved, setTreesSaved] = useState(0);
+  const [co2Not, setCo2Not] = useState(0);
+  const [today, setToday] = useState('');
+  const { hourlyData } = useStatsSolar();
 
   useEffect(() => {
-    if(!isLoading){
-      const expected = statsSolar?.data.data.expected
-      const generated = statsSolar?.data.data.generation
+    if(hourlyData){
+      const {expected, generation, totals} = hourlyData
 
-      function percentageCalc(valor: number, total: number) {
-        return (valor / total) * 100;
+      function somarItensArray(array:Array<number>) {
+        let soma = 0;
+        for (let i = 0; i < array.length; i++) {
+          soma += array[i];
+        }
+        return soma;
       }
-
+      const dateToday = new Date();
+      setToday(`${dateToday.getDate()}/${dateToday.getMonth()+1 < 10 ? `0${dateToday.getMonth()+1}` : dateToday.getMonth()+1}/${dateToday.getFullYear()}`)
       setTotalExpected(expected[expected.length-1]);
-      setTotalGenerated(generated[generated.length-1])
-      // setPercentageGenerated(percentageCalc(generated[generated.length-1], expected[expected.length-1]))
-      setPercentageGenerated(90)
+      setTotalGenerated(somarItensArray(generation));
+      setPercentageGenerated(totals?.percentage.toFixed(0));
+      setTreesSaved(totals?.trees);
+      setCo2Not(totals?.co2);
     }
-  },[isLoading])
+  },[])
 
   return (
     <S.Container>
@@ -52,7 +51,13 @@ export default function HomeScreen() {
           </View>
         </S.HeaderSummary>
       <ProgressStatus percentageGenerated={percentageGenerated}/>
-      <DetailsSummary/>
+      <DetailsSummary 
+        totalGenerated={totalGenerated} 
+        totalExpected={totalExpected}
+        treesSaved={treesSaved}
+        co2Not={co2Not}
+        today={today}
+      />
     </S.Container>
   );
 }

@@ -8,9 +8,12 @@ import api from '../../services/api';
 
 import * as S from '../../styles/tabs/details/styles'
 import ChartDetails from '../../components/ChartDetails';
+import { useStatsSolar } from '../../context/StatsSolarContext';
 
 export default function Details() {
-  const queryClient = useQueryClient ();
+  const queryClient = useQueryClient();
+
+  const { hourlyData, dailyData, monthlyData, yearlyData } = useStatsSolar();
   
   const [option, setOption] = useState({label: 'Horas', value: 'hourly'});
   const [percentage, setPercentage] = useState(0);
@@ -19,31 +22,6 @@ export default function Details() {
   const [co2Not, setCo2Not] = useState(0);
   const [dataChart, setDataChart] = useState<Array<{x: string, y: number}>>([]);
   const [labelX, setLabelX] = useState('Hora')
-
-  const getStats = async () =>{
-    return await api.get(
-      `/plant/generation/test-2023?dataType=yearly`,
-    );
-  }
-
-  const { data: statsSolar, isLoading } = useQuery(
-    'stats-solar',
-    getStats,
-    {
-      retry: 3,
-    }
-  )
-
-  async function refetchData() {
-    await queryClient.invalidateQueries('stats-solar')
-    console.log('cancel')
-  }
-
-  useEffect(()=>{
-    console.log(option?.value)
-    refetchData()
-  },[option])
-
 
   const generatedDataChart = (array1: Array<string>, array2: Array<number>) => {
     const mergedList = [];
@@ -57,6 +35,13 @@ export default function Details() {
   }
 
   const labelDataChart = (arrayLabel: Array<string>) =>{
+    const formatHourly = () => {
+      const list = []
+      for (let i = 0; i < arrayLabel.length; i++){
+        list.push(arrayLabel[i].split(':')[0])
+      }
+      return list
+    }
     const formatDaily = () => {
       const list = []
       for (let i = 0; i < arrayLabel.length; i++){
@@ -79,36 +64,59 @@ export default function Details() {
       return list
     }
 
-    const x = 1
-
-    switch (x){
-      case 1:
-        setLabelX('Ano')
-        return formatYearly()
+    switch (option?.value){
+      case 'hourly':
+        setLabelX('Hora')
+        return formatHourly()
       case 'daily':
         setLabelX('Dias')
         return formatDaily()
       case 'monthly':
         setLabelX('Mês')
         return formatMonthly()
+      case 'yearly':
+          setLabelX('Ano')
+          return formatYearly()
       default:
         return []
     }
   }
 
+  const setupData = (statsSolar: any) => {
+    const {kwh, percentage, trees, co2} = statsSolar?.totals
+    const labels = statsSolar?.x_labels || undefined
+    const generation = statsSolar?.generation || undefined
+    setDataChart(generatedDataChart(labelDataChart(labels), generation))
+    setPercentage(percentage.toFixed(0))
+    setEnergyGenerated(kwh.toFixed(1))
+    setTreesSaved(trees)
+    setCo2Not(co2)
+  }
+
   useEffect(()=>{
-    if(!isLoading){
-      console.log(statsSolar?.data?.data?.x_labels)
-      const {kwh, percentage, trees, co2} = statsSolar?.data?.data?.totals
-      const labels = statsSolar?.data?.data?.x_labels || undefined
-      const generation = statsSolar?.data?.data?.generation || undefined
-      setDataChart(generatedDataChart(labelDataChart(labels), generation))
-      setPercentage(percentage.toFixed(0))
-      setEnergyGenerated(kwh.toFixed(1))
-      setTreesSaved(trees)
-      setCo2Not(co2)
+    switch (option?.value){
+      case 'hourly':
+        setupData(hourlyData)
+        break;
+      case 'daily':
+        setupData(dailyData)
+        break;
+      case 'monthly':
+        setupData(monthlyData)
+        break;
+      case 'yearly':
+        setupData(yearlyData)
+        break;
+      default:
+        break;
     }
-  },[isLoading])
+  },[option])
+
+  const handleOptions = async (option: {label: string, value: string} ) => {
+    await queryClient.refetchQueries({queryKey: ['stats'], exact: true })
+    setOption(option)
+  }
+  
 
   const details = [
     { id: 1, type:"energy-generated", title:'Energia gerada', value: `${energyGenerated}`, unity: 'kWh'},
@@ -122,7 +130,7 @@ export default function Details() {
       <S.Container>
         <TabResume 
           option={option}
-          setOption={setOption} 
+          setOption={handleOptions} 
           percentage={percentage}
         />
         <FlatList

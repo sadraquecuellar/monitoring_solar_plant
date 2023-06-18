@@ -26,6 +26,7 @@ const Chart = ({chartData, labelX}:ChartProps)=>{
         }}
         barWidth={20}
         labels={({ datum }) => {
+          if (datum.y < 1000) return datum.y
           const label = datum.y.toString();
           return label.length >= 3 ?  `${label.substring(0,1)}K`: label
         }}

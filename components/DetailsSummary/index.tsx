@@ -5,7 +5,7 @@ import * as S from './styles';
 
 interface BoxDetailsProps {
   up: boolean;
-  value: number; 
+  value: string; 
   unity: string;
   description: string;
 }
@@ -39,7 +39,15 @@ const BoxDetails = (props:BoxDetailsProps) =>{
   )
 }
 
-export default function DetailsSummary(){
+interface DetailsSummaryProps {
+  totalGenerated: number
+  totalExpected: number
+  treesSaved: number
+  co2Not: number,
+  today: string
+}
+
+export default function DetailsSummary({totalGenerated, totalExpected, treesSaved, co2Not, today}:DetailsSummaryProps){
   return (
     <S.Container>
         <S.SelectDay>
@@ -48,7 +56,7 @@ export default function DetailsSummary(){
           </S.SelectDayButton>
           <S.SelectDayContent>
             <S.SelectDayContentText>
-              Hoje, 16/06/23
+              Hoje,{' '}{today}
             </S.SelectDayContentText>
           </S.SelectDayContent>
           <S.SelectDayButton>
@@ -57,18 +65,18 @@ export default function DetailsSummary(){
         </S.SelectDay>
         <S.Details>
           <S.DetailsLeftSide>
-            <BoxDetails up={true} value={135} unity={'kWh'} description={'Energia gerada'} />
+            <BoxDetails up={true} value={totalGenerated.toFixed(1)} unity={'kWh'} description={'Energia gerada'} />
           </S.DetailsLeftSide>
           <S.DetailsRightSide>
-            <BoxDetails up={false} value={200} unity={'kWh'} description={'Energia esperada'} />
+            <BoxDetails up={false} value={totalExpected.toFixed(1)} unity={'kWh'} description={'Energia esperada'} />
           </S.DetailsRightSide>
         </S.Details>
         <S.Details>
           <S.DetailsLeftSide>
-            <BoxDetails up={false} value={200} unity={'ton'} description={'Redução de CO2'} />
+            <BoxDetails up={false} value={co2Not.toString()} unity={'ton'} description={'Redução de CO2'} />
           </S.DetailsLeftSide>
           <S.DetailsRightSide>
-            <BoxDetails up={true} value={1.1} unity={''} description={'Árvores salvas'} />
+            <BoxDetails up={true} value={treesSaved.toString()} unity={''} description={'Árvores salvas'} />
           </S.DetailsRightSide>
         </S.Details>
       </S.Container>
